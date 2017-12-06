@@ -12,7 +12,7 @@ all:
 
 	
 
-all: main.o libcomponent.o libpower.o c_functilibresistanceons.o 
+all: main.o libcomponent.o libpower.o libresistance.o 
 	${CC} ${CFLAGS2} -o electrotest main.o libcomponent.o libpower.o libresistance.o   
 
 #Compile source files to object files.

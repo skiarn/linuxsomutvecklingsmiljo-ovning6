@@ -22,7 +22,7 @@ float calc_resistance(int count, char conn, float *array)
 		size_t i = 0;
 		for( ; i < count; ++i ) {
 			resistance += array[i];
-			printf("added %f to resistance total: %f", array[i], resistance);      			
+			//printf("added %f to resistance total: %f", array[i], resistance);      			
 		}    
 	}
 	if(conn==PARALELL){
