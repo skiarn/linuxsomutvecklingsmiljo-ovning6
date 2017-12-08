@@ -2,8 +2,11 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "libresistance.h"
+#include "libpower.h"
+#include "libcomponent.h"
 #include "main.h"
 
 /**
@@ -15,15 +18,15 @@ Komponent 2 i ohm: 500
 Komponent 3 i ohm: 598
 Ersättningsresistans: 1398 ohm
 Effekt: 1.78 W
-Ersättningsresistanser i E12-serien kopplade i serie: 1200, 180,  18 
- * 
+Ersättningsresistanser i E12-serien kopplade i serie: 1200, 180,  18
+ *
  **/
 
 struct Komponent {
    int  spanning;
 };
 
-typedef struct komponent Komponent; 
+typedef struct komponent Komponent;
 
 void printKomponents(struct Komponent list[], int len);
 void printKomponent(struct Komponent k );
@@ -34,7 +37,7 @@ int main(int argc, char *argv[])
     int spanning;
     printf("Ange spänningskälla i V: ");
     scanf("%d", &spanning);
-    
+
     char koppling;
 
     while(true){
@@ -45,7 +48,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    
+
     int amountOfKomponenter;
     printf("Antal komponenter: ");
     scanf("%d", &amountOfKomponenter);
@@ -53,7 +56,7 @@ int main(int argc, char *argv[])
     struct Komponent komponents[amountOfKomponenter];
 
     for(int i = 0; i < amountOfKomponenter;  i++){
-      struct Komponent k; 
+      struct Komponent k;
 
       int tmpSpanning;
       printf("Komponent %d i ohm:", i);
@@ -62,12 +65,34 @@ int main(int argc, char *argv[])
       komponents[i] = k;
     }
 
-    float ersattningsresistans = calc_resistance(amountOfKomponenter, koppling, getKomponentsSpanning(komponents ,amountOfKomponenter));
-    
+    float * spanningsList =  getKomponentsSpanning(komponents ,amountOfKomponenter);
+    float ersattningsresistans = calc_resistance(amountOfKomponenter, koppling, spanningsList);
+    free(spanningsList);
+
     printf("Ersättningsresistans: %f ohm\n", ersattningsresistans);
-    float effekt = 0.0;
-    printf("TODO: Effekt: %f W\n", effekt);
-    printf("Ersättningsresistanser i E12-serien kopplade i serie: 1200, 180,  18\n");
+    float effekt = calc_power_r(spanning, ersattningsresistans);
+    //Multiplicera med 100 och dela med 100.0 för att avrunda nedåt
+
+    printf("Effekt: %.2f W\n", floorf(effekt * 100) / 100);
+    float *ersattningsresistorer = malloc(sizeof(float) * 3);
+    int resistorerlen = e_resistance(ersattningsresistans, ersattningsresistorer);
+
+    char reslist[80];
+
+    for (int i = 0; i < resistorerlen; i++)
+    {
+        char tmp[50];
+        if (i < resistorerlen -1)
+        {
+         sprintf(tmp,"%g, ", ersattningsresistorer[i]);
+        }
+        else
+        {
+             sprintf(tmp,"%g ", ersattningsresistorer[i]);
+        }
+        strcat(reslist, tmp);
+        }
+    printf("Ersättningsresistanser i E12-serien kopplade i serie: %s\n", reslist);
 
 	return(RETVALUE);
 }
@@ -78,14 +103,14 @@ float* getKomponentsSpanning(struct Komponent list[], int len) {
     for(int i = 0; i < len;  i++){
        p[i] = list[i].spanning;
     }
-    
+
     return p;
 }
 void printKomponents(struct Komponent list[], int len) {
     for(int i = 0; i < len;  i++){
         printKomponent(list[i]);
     }
-   
+
 }
 
 void printKomponent(struct Komponent k ) {

@@ -2,7 +2,7 @@ CC=gcc
 
 CFLAGS1 = -Wall -g -c
 CFLAGS2 = -g
-CFLAGS_SHARED = -Wall -shared -g -c 
+CFLAGS_SHARED = -Wall -shared -g -c
 
 # Link the two object files together.
 all: 
@@ -13,7 +13,7 @@ all:
 	
 
 all: main.o libcomponent.o libpower.o libresistance.o 
-	${CC} ${CFLAGS2} -o electrotest main.o libcomponent.o libpower.o libresistance.o   
+	${CC} ${CFLAGS2} -o electrotest main.o libcomponent.o libpower.o libresistance.o -lm
 
 #Compile source files to object files.
 main.o: main.c

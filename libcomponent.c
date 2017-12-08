@@ -20,14 +20,14 @@ int e_resistance(float orig_resistance,float *res_array) {
 	if (validValue) {
 		for (int i = upperLimit; i>lowerLimit; i--) {
 			for (int rValues = 11; rValues > 0; rValues--) {
-				
-				float currentResistance = e12Array[rValues]*pow( (float) 10, (float) i); 
+
+				float currentResistance = e12Array[rValues]*pow( (float) 10, (float) i);
 				if (currentResistance <= neededResistance(orig_resistance,res_array) && arrayPosition < 3) {
-					printf("Added resistance:");
-					printf("\%.16f\n",currentResistance);
-					res_array[arrayPosition] = currentResistance; 
+					//printf("Added resistance:");
+					//printf("\%f\n",currentResistance);
+					res_array[arrayPosition] = currentResistance;
 					arrayPosition ++;
-				} 
+				}
 			}
 		}
 	} else {
