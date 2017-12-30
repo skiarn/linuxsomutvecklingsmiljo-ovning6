@@ -3,13 +3,6 @@ CC=gcc
 CFLAGS1 = -Wall -g -c
 CFLAGS2 = -g
 CFLAGS_SHARED = -Wall -shared -g -c
-
-# Link the two object files together.
-all: 
-	make libcomponent
-	gcc -o main.exe main.o
-	gcc -L/libresistance -Wall -o electrotest main.c -lfoo
-
 	
 
 all: main.o libcomponent.o libpower.o libresistance.o 
