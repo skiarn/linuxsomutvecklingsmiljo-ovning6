@@ -30,12 +30,11 @@ float calc_resistance(int count, char conn, float *array)
 		size_t i = 0;
 		//1/R1 + 1/R2
 		double sum = 0.0;
-		double multip = 1.0;
+		//double multip = 1.0;
 		for( ; i < count; ++i ){
-			sum += array[i];
-			multip = multip * array[i];
+			sum += 1/array[i];
 		}
-		resistance = sum / multip;
+		resistance = 1/sum;
 	}
 	return resistance;
 
