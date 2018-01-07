@@ -42,7 +42,6 @@ install:
 	make all
 	mv electrotest /usr/local/bin/electrotest
 	mv ./lib/ /usr/local/bin/
-	@ldconfig  
 uninstall:
 	make clean
 	rm /usr/local/bin/electrotest
